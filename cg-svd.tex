@@ -22,7 +22,7 @@
 \author[Adriano Barbosa]{Adriano Oliveira Barbosa\\
 Universidade Federal da Grande Dourados\\
 https://adrianobarbosa.xyz}
-\title{Computa\c{c}\~ao Gr\'afica e Processamento de Imagens}
+\title{Computa\c{c}\~ao Gr\'afica + Matem\'atica = Compress\~ao de Imagens}
 \subtitle[Dias Exatos]{Dias Exatos}
 \date{Dezembro, 2018}
 
@@ -121,6 +121,182 @@ https://adrianobarbosa.xyz}
     \begin{figure}
         \centering   
         \includegraphics[width=0.5\textwidth]{figs/imagem-matriz.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Uma imagem no computador}{Matrizes}
+    \begin{figure}
+        \centering   
+        \includegraphics[width=\textwidth]{figs/canais-de-cor2.png}
+        \caption{Fonte: Mario Carvajal}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Decomposi\c{c}\~ao SVD}
+    Dada $A_{m \times n}$, existem matrizes $U_{m \times m}$, $D_{m \times n}$
+    e $V_{n \times n}$ tais que
+    \[A = UDV^T\]
+
+    \pause
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figs/svd1.pdf}
+    \end{figure}
+%    Por exemplo,
+%    \begin{eqnarray}
+%        \left[\begin{array}{cc}
+%            a_{11} & a_{12} \\
+%            a_{21} & a_{22}
+%        \end{array}\right]
+%        & = &
+%        \left[\begin{array}{cc}
+%            u_{11} & u_{12} \\
+%            u_{21} & u_{22}
+%        \end{array}\right]
+%        \left[\begin{array}{cc}
+%            d_{11} & 0 \\
+%            0 & d_{22}
+%        \end{array}\right]
+%        \left[\begin{array}{cc}
+%            v_{11} & v_{21} \\
+%            v_{12} & v_{22}
+%        \end{array}\right] \nonumber \\
+%        & = &
+%        d_{11}
+%        \left[\begin{array}{c}
+%            u_{11} \\
+%            u_{21}
+%        \end{array}\right]
+%        \left[\begin{array}{cc}
+%            v_{11} & v_{21}
+%        \end{array}\right]
+%        +
+%        d_{22}
+%        \left[\begin{array}{c}
+%            u_{12} \\
+%            u_{22}
+%        \end{array}\right]
+%        \left[\begin{array}{cc}
+%            v_{12} & v_{22}
+%        \end{array}\right] \nonumber 
+%    \end{eqnarray}
+\end{frame}
+
+\begin{frame}{Decomposi\c{c}\~ao SVD}
+    Dada $A_{m \times n}$, existem matrizes $U_{m \times m}$, $D_{m \times n}$
+    e $V_{n \times n}$ tais que
+    \[A = UDV^T\]
+
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figs/svd2.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Decomposi\c{c}\~ao SVD}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figs/svd3.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Decomposi\c{c}\~ao SVD}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{figs/svd4.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Compress\~ao de imagem}{Imagem original}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{figs/navio-original.png}
+        \caption{Tamanho: $2448 \times 3264$}
+    \end{figure}
+    \pause
+    \begin{center}
+        N\'umeros reais: $2448\times3264\times3=23.970.816$
+    \end{center}
+\end{frame}
+
+\begin{frame}{Compress\~ao de imagem}{
+    $A \approx d_{1,1}\cdot u(:,1)\cdot v(1,:)$}
+    \pause
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{implementacao/out/nova1.png}
+        \caption{Apenas 1 parcela}
+    \end{figure}
+    \begin{center}
+        N\'umeros reais: $(1 + 2448 + 3264) \times 3 = 17.139\ (0,07\%)$
+    \end{center}
+\end{frame}
+
+\begin{frame}{Compress\~ao de imagem}{
+    $A \approx d_{1,1}\cdot u(:,1)\cdot v(1,:) + d_{2,2}\cdot
+    u(:,2)\cdot v(2,:) +\cdots+ d_{50,50}\cdot u(:,50)\cdot v(50,:)$}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{implementacao/out/nova50.png}
+        \caption{Com 50 parcelas}
+    \end{figure}
+    \begin{center}
+        N\'umeros reais: $(1 + 2448 + 3264)\times 50 \times 3 = 856.950\ (3,5\%)$
+    \end{center}
+\end{frame}
+
+\begin{frame}{Compress\~ao de imagem}{
+    $A \approx d_{1,1}\cdot u(:,1)\cdot v(1,:) + d_{2,2}\cdot
+    u(:,2)\cdot v(2,:) +\cdots+ d_{100,100}\cdot u(:,100)\cdot v(100,:)$}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{implementacao/out/nova100.png}
+        \caption{Com 100 parcelas}
+    \end{figure}
+    \begin{center}
+        N\'umeros reais: $(1 + 2448 + 3264)\times 100 \times 3 = 1.713.900\ (7,1\%)$
+    \end{center}
+\end{frame}
+
+\begin{frame}{Compress\~ao de imagem}{
+    $A \approx d_{1,1}\cdot u(:,1)\cdot v(1,:) + d_{2,2}\cdot
+    u(:,2)\cdot v(2,:) +\cdots+ d_{200,200}\cdot u(:,200)\cdot v(200,:)$}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{implementacao/out/nova200.png}
+        \caption{Com 200 parcelas}
+    \end{figure}
+    \begin{center}
+        N\'umeros reais: $(1 + 2448 + 3264)\times 200 \times 3 = 3.427.800\ (14,3\%)$
+    \end{center}
+\end{frame}
+
+\begin{frame}{Vantagens}
+    \begin{itemize}
+        \item armazenamento
+        \item banda para transmiss\~ao (streaming)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Desvantagens}
+    \begin{itemize}
+        \item processamento para reconstru\c{c}\~ao
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Perguntas}
+    \begin{figure}
+        \centering
+        \includegraphics[height=\textheight]{figs/perguntas.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figs/obrigado.pdf}
     \end{figure}
 \end{frame}
 
